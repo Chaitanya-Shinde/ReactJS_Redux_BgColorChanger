@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import ColorTile from '../../components/ColorTile'
 import './index.css'
 import { setColor } from '../../redux/color/ColorAction';
@@ -6,7 +6,8 @@ import {useSelector, useDispatch} from 'react-redux'
 
 function Homepage(props) {
 	const colors = ['#609966', '#F03861', '#111D5E', '#FFE087']
-	const [currentColor, setCurrentColor] = useState('a');
+	const currentColor = useSelector((state) => state.color.currentColor);
+  	const dispatch = useDispatch();
 
 	const setTheme=(color)=>{
 		document.documentElement.style.setProperty('--bg-color', color)
@@ -14,13 +15,10 @@ function Homepage(props) {
 	
 	const setBgColor = (e)=>{
 		const color = e.target.style.getPropertyValue('--tile-color');
-		setCurrentColor(color);
+		dispatch(setColor(color))
 		localStorage.setItem('color', color);
 	}
 
-	useEffect(()=>{
-		setCurrentColor(localStorage.getItem('color'))
-	},[])
 
 	useEffect(()=>{
 		setTheme(currentColor);
@@ -41,4 +39,4 @@ function Homepage(props) {
 
 
 
-export default (Homepage)
+export default Homepage
